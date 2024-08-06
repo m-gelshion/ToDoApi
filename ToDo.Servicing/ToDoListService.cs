@@ -23,16 +23,16 @@ public class ToDoListService(IToDoRepository repository) : IToDoListService
 
     public required int UserId { get; set; }
 
-    public async Task AddItemToList(int listId, string itemTitle)
+    public async Task<ToDoItem> AddItemToList(int listId, string itemTitle)
     {
         var item = new ToDoItem
         {
             Title = itemTitle
         };
-        await repository.AddItemToListAsync(listId, item);
+        return await repository.AddItemToListAsync(listId, item);
     }
 
-    public async Task<int> CreateList(string listTitle)
+    public async Task<ToDoList> CreateList(string listTitle)
     {
         var list = new ToDoList
         {

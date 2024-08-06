@@ -13,20 +13,8 @@ builder.Services.AddSwaggerGen(
         {
             Version = "v1",
             Title = "ToDo API",
-            Description = "An ASP.NET Core Web API for managing ToDo items",
-            TermsOfService = new Uri("https://example.com/terms"),
-            Contact = new OpenApiContact
-            {
-                Name = "Michael Gelshion",
-                Url = new Uri("https://example.com/contact")
-            },
-            License = new OpenApiLicense
-            {
-                Name = "Example License",
-                Url = new Uri("https://example.com/license")
-            }
+            Description = "An API for managing ToDo lists and items<h4>You can test this by navigating to the <a href='/home'>Demo UI</a></h4>"
         });
-        // using System.Reflection;
         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     }
@@ -39,6 +27,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler("/Home/Error");
 app.UseSwagger();
+
 app.UseSwaggerUI(
     options =>
     {
@@ -55,6 +44,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

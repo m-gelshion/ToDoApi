@@ -8,6 +8,10 @@ namespace ToDo.Controllers;
 [ApiController]
 public class UserController(IUserService service) : Controller
 {
+    /// <summary>
+    /// Get Users
+    /// </summary>
+    /// <remarks>Retrieves the system Users</remarks>
     [HttpGet]
     public async Task<IEnumerable<User>> GetUsers()
         => await service.GetUsers();

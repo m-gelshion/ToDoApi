@@ -1,8 +1,198 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Main Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Lists</h1>
+<div class="container-fluid">
+    <p>
+        User:
+        <select data-bind="options: users, optionsText: 'fullName', value: currentUser, optionsCaption: 'Select...'"></select>
+    </p>
+    <!-- ko if: currentUser -->
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addListModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+            <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0" />
+        </svg>
+    </button>
+    <hr />
+    <div class="row">
+        <div class="col-5">
+            <!-- ko foreach: lists-->
+            <div class="row">
+                <div class="col alert" data-bind="class: listCompleteCss">
+                    <a data-bind="attr: { href:'#collapseItems-'+id(), 'aria-controls': 'collapseItems-'+id() }" class="btn" style="text-decoration:none" data-bs-toggle="collapse" aria-expanded="false"><span data-bind="text:title"></span> &nbsp;<span class="badge bg-secondary" data-bind="text:items.Length"></span></a>
+                    <button type="button" class="btn btn-danger float-end" data-bind="click: $root.selectList($index)" data-bs-toggle="modal" data-bs-target="#removeListModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-primary float-end" data-bind="click: $root.editList($index)" data-bs-toggle="modal" data-bs-target="#editListModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col collapse" data-bind="attr: { id: 'collapseItems-'+id() }">
+                    <button class="btn btn-success" data-bind="click: $root.selectList($index)" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg>
+                    </button>
+                    <hr />
+                    <ul class="list-group" data-bind="foreach: items">
+                        <li class="list-group-item" data-bind="class: itemCompleteCss">
+                            <div class="row align-items-center">
+                                <div class="col-9" role="button" data-bind="text: title, click: toggleItemCompletion">
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-danger float-end" data-bind="click: $root.selectItem($index)" data-bs-toggle="modal" data-bs-target="#removeItemModal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary float-end" data-bind="click: $root.editItem($index)" data-bs-toggle="modal" data-bs-target="#editItemModal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <br />
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- Add ListModal -->
+<div class="modal fade" id="addListModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="addListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addListModalLabel">Add List</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: clearSelection"></button>
+            </div>
+            <div class="modal-body">
+                Title: <input type="text" data-bind="textInput: newListName"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click: clearSelection">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bind="click: saveList, enable: isListValid">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit ListModal -->
+<div class="modal fade" id="editListModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="editListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editListModalLabel">Edit List</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: clearSelection"></button>
+            </div>
+            <div class="modal-body">
+                Title: <input type="text" data-bind="textInput: newListName" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click: clearSelection">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bind="click: updateList, enable: isListValid">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit ItemModal -->
+<div class="modal fade" id="editItemModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="editItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editListModalLabel">Edit Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: clearSelection"></button>
+            </div>
+            <div class="modal-body">
+                Title: <input type="text" data-bind="textInput: newItemName" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click: clearSelection">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bind="click: updateItem, enable: isItemValid">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove ListModal -->
+<div class="modal fade" id="removeListModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="removeListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="removeListModalLabel">Remove List</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: clearSelection"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this list and its items?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click: clearSelection">Close</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" data-bind="click: removeList">
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add ItemModal -->
+<div class="modal fade" id="addItemModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addItemModalLabel">Add Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: clearSelection"></button>
+            </div>
+            <div class="modal-body">
+                Title: <input type="text" data-bind="textInput: newItemName" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click: clearSelection">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bind="click: saveItem, enable: isItemValid">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove ItemModal -->
+<div class="modal fade" id="removeItemModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="removeItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="removeItemModalLabel">Remove Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bind="click: clearSelection"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bind="click: clearSelection">Close</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" data-bind="click: removeItem">
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

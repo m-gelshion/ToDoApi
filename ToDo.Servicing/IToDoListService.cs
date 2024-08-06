@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDo.BusinessModels;
+﻿using ToDo.BusinessModels;
 
 namespace ToDo.Servicing;
 
@@ -13,7 +8,7 @@ public interface IToDoListService
 
     Task<Dictionary<string, string[]>?> Authorize(int listId);
 
-    Task<int> CreateList(string listTitle);
+    Task<ToDoList> CreateList(string listTitle);
 
     Task<List<ToDoList>> GetUserLists();
 
@@ -21,5 +16,5 @@ public interface IToDoListService
 
     Task DeleteList(int listId);
 
-    Task AddItemToList(int listId, string itemTitle);
+    Task<ToDoItem> AddItemToList(int listId, string itemTitle);
 }
