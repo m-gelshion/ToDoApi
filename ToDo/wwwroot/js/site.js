@@ -108,7 +108,7 @@
 
         this.editItem = function (index) {
             self.currentItemIndex(index());
-            var item = self.lists()[index()]
+            var item = self.lists()[self.currentListIndex()]
                 .items()[index()];
             self.newItemName(item.title());
         };
