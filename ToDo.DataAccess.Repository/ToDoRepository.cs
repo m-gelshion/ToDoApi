@@ -48,7 +48,7 @@ public class ToDoRepository(IToDoContext context) : IToDoRepository
         await Task.CompletedTask;
     }
 
-    public async Task<int> CreateListAsync(int userId, ToDoList list)
+    public async Task<ToDoList> CreateListAsync(int userId, ToDoList list)
     {
         var listRecord = new ToDoListRecord
         {
@@ -70,7 +70,9 @@ public class ToDoRepository(IToDoContext context) : IToDoRepository
         context.ToDoListUsers.Add(userListRecord);
         context.ToDoLists.Add(listRecord);
 
-        return await Task.FromResult(listRecord.Id);
+        list.Id = listRecord.Id;
+
+        return await Task.FromResult(list);
     }
 
     public async Task<List<ToDoList>> GetUsersListsAsync(int userId)
@@ -94,7 +96,7 @@ public class ToDoRepository(IToDoContext context) : IToDoRepository
         return await Task.FromResult(lists);
     }
 
-    public async Task AddItemToListAsync(int listId, ToDoItem item)
+    public async Task<ToDoItem> AddItemToListAsync(int listId, ToDoItem item)
     {
         var itemRecord = new ToDoItemRecord
         {
@@ -108,7 +110,9 @@ public class ToDoRepository(IToDoContext context) : IToDoRepository
             context.ToDoItems.Add(itemRecord);
             list.Items.Add(itemRecord);
         }
-        await Task.CompletedTask;
+
+        item.Id = itemRecord.Id;
+        return await Task.FromResult(item);
     }
 
     public async Task UpdateListAsync(int userId, ToDoList list)

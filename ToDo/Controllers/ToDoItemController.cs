@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDo.Servicing;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace ToDo.Controllers
 {
     [Route("api/users/{userId}/[controller]")]
@@ -16,7 +14,7 @@ namespace ToDo.Controllers
         /// This will modify an existing item's title
         /// </remarks>
         /// <param name="userId">
-        /// The User authorized to update this item
+        /// The User authorized to update this Item
         /// </param>
         /// <param name="id">
         /// The Item identifier
@@ -29,7 +27,7 @@ namespace ToDo.Controllers
         {
             service.UserId = userId;
 
-            var authResult = await service.Authorize(id);
+            var authResult = await service.Authorize(id); // TODO: Incorporate into middleware?
             if (authResult != default)
             {
                 return BadRequest(authResult);
@@ -45,6 +43,16 @@ namespace ToDo.Controllers
             return new NoContentResult();
         }
 
+        /// <summary>
+        /// Complete Item
+        /// </summary>
+        /// <remarks>Flags an Item as complete</remarks>
+        /// <param name="userId">
+        /// The User authorized to update this Item
+        /// </param>
+        /// <param name="id">
+        /// The Item identifier
+        /// </param>
         [HttpPut("{id}/complete")]
         public async Task<IActionResult> PutComplete(int userId, int id)
         {
@@ -60,6 +68,16 @@ namespace ToDo.Controllers
             return new NoContentResult();
         }
 
+        /// <summary>
+        /// Clear Item
+        /// </summary>
+        /// <remarks>Clears the completion status of an Item</remarks>
+        /// <param name="userId">
+        /// The User authorized to update this Item
+        /// </param>
+        /// <param name="id">
+        /// The Item identifier
+        /// </param>
         [HttpPut("{id}/clear")]
         public async Task<IActionResult> PutClear(int userId, int id)
         {
@@ -75,6 +93,16 @@ namespace ToDo.Controllers
             return new NoContentResult();
         }
 
+        /// <summary>
+        /// Delete Item
+        /// </summary>
+        /// <remarks>Deletes an Item</remarks>
+        /// <param name="userId">
+        /// The User authorized to update this Item
+        /// </param>
+        /// <param name="id">
+        /// The Item identifier
+        /// </param>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int userId, int id)
         {

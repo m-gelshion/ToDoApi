@@ -11,13 +11,13 @@ public interface IToDoRepository
 {
     Task<List<ToDoList>> GetUsersListsAsync(int userId);
 
-    Task<int> CreateListAsync(int userId, ToDoList list);
+    Task<ToDoList> CreateListAsync(int userId, ToDoList list);
 
     Task UpdateListAsync(int userId, ToDoList list);
 
     Task DeleteListAsync(int userId, int listId);
 
-    Task AddItemToListAsync(int listId, ToDoItem item);
+    Task<ToDoItem> AddItemToListAsync(int listId, ToDoItem item);
 
     Task UpdateItemAsync(ToDoItem item);
 
